@@ -116,9 +116,8 @@ def terminate_host(host):
     # erasing a host from delos_hosts records
     del(Park.delos_hosts[host.name])
     # localising the host object in global namespace and terminating it by its key
-    func = lambda key: key if globals()[key] == host else None
-    objects_with_required_keys = list(filter(func, globals()))
-    for obj in objects_with_required_keys:
+    global_names_containing_host = [key for key, value in globals().items() if value == host]
+    for obj in global_names_containing_host:
         del globals()[obj]
     print(f"\n{host.name} ::::: TERMINATED")
 
@@ -157,5 +156,3 @@ if __name__ == '__main__':
     print(park_3.active_hosts_stats())
     print(Dolores)
     print(Park.delos_hosts_stats())
-
-
