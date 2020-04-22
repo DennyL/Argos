@@ -28,13 +28,16 @@ class Park:
             print(f"\t{name} ::::: control unit #{id(identity)}")
         return "Listing complete"
 
+    def __str__(self):
+        return self.park_name
+
 
 class Host(Park):
     """The Host model"""
-    def __init__(self, park_id, name, gender, race, height, legend="MISSING", back_story="MISSING"):
-        self.park_id = park_id
-        self.status = "active"
+    def __init__(self, park, name, gender, race, height, legend="MISSING", back_story="MISSING"):
         self.name = name
+        self.status = "active"
+        self.park = park
         self.gender = gender
         self.race = race
         self.height = height
@@ -43,28 +46,21 @@ class Host(Park):
 
         # as the instance of a host is created
         # we add it to the list of hosts in a particular park
-        self.park_id.active_hosts.update({self.name: self})
+        self.park.active_hosts.update({self.name: self})
         # and to the general statistic of Delos' hosts
         Park.delos_hosts.update({self.name: id(self)})
 
     def __str__(self):
-        """returns the host's profile"""
-        return f'''
-Host name: {self.name.upper()}
-Current location: {self.park_id.park_name.upper()}
-Status: {self.status.upper()}
-Gender: {self.gender.upper()}
-Race: {self.race.upper()}
-Height: {self.height} cm
-Legend: {self.legend}
-Back Story: {self.back_story}
-'''
+        profile = []
+        for k, v in self.__dict__.items():
+            profile.append(f"\n{k.upper()}: {str(v)}")
+        return "".join(profile)
 
     def add_back_story(self, file):
         """host's back story upload. Receives a link to the file containing the back story"""
         with open(file) as back_story:
             self.back_story = back_story.read()
-        print(f"### {self.name}. Back story successfully uploaded ###")
+        print(f"\n### {self.name}. Back story successfully uploaded ###")
 
 
 class Storage:
@@ -84,12 +80,15 @@ class Storage:
             print(f"\t{name} ::::: control unit #{id(identity)}")
         return "Listing complete"
 
+    def __str__(self):
+        return self.park_name
+
 
 def decommission_host(host):
     """deletes a host record from the park by the host's name
     and places it into the warehouse"""
-    del(host.park_id.active_hosts[host.name])
-    host.park_id = storage
+    del(host.park.active_hosts[host.name])
+    host.park = storage
     host.status = 'decommissioned'
     storage.decommissioned_hosts.update({host.name: host})
     print(f"\n{host.name} ::::: DECOMMISSIONED")
@@ -98,7 +97,7 @@ def decommission_host(host):
 def reactivate_host(host, park):
     """reactivates a host from a storage in the park selected"""
     del(storage.decommissioned_hosts[host.name])
-    host.park_id = park
+    host.park = park
     host.status = 'active'
     park.active_hosts.update({host.name: host})
     print(f"\n{host.name} ::::: RE-ACTIVATED in {park.park_name}")
@@ -112,7 +111,7 @@ def terminate_host(host):
        where it was created
     """
     # erasing a host from his park records
-    del(host.park_id.active_hosts[host.name])
+    del(host.park.active_hosts[host.name])
     # erasing a host from delos_hosts records
     del(Park.delos_hosts[host.name])
     # localising the host object in global namespace and terminating it by its key
@@ -141,10 +140,10 @@ Musashi = Host(park_2, "Musashi Sanada", "male", "Japanese", 176, "Shogun")
 
 
 if __name__ == '__main__':
-    # print(Bernard)
-    # Bernard.add_back_story("Stories/Bernard Lowe.txt")
+    print(Bernard)
+    Bernard.add_back_story("Stories/Bernard Lowe.txt")
     print(Dolores)
-    # print(Bernard)
+    print(Bernard)
     print(park_1.active_hosts_stats())
     decommission_host(Dolores)
     print(storage.decommissioned_hosts_stats())
@@ -156,3 +155,5 @@ if __name__ == '__main__':
     print(park_3.active_hosts_stats())
     print(Dolores)
     print(Park.delos_hosts_stats())
+
+    print(Maeve)
