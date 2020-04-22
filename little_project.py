@@ -106,19 +106,19 @@ def reactivate_host(host, park):
 
 def terminate_host(host):
     """deletes a host from:
-       1. the park/storage of his location,
-       2. the general delos_hosts records
+       1. the park/storage of his location records;
+       2. the general delos_hosts records;
        3. finally deletes the host instance object entirely from the global namespace
-       where it was creates
+       where it was created
     """
     # erasing a host from his park records
     del(host.park_id.active_hosts[host.name])
     # erasing a host from delos_hosts records
     del(Park.delos_hosts[host.name])
     # localising the host object in global namespace and terminating it by its key
-    global_names_containing_host = [key for key, value in globals().items() if value == host]
-    for obj in global_names_containing_host:
-        del globals()[obj]
+    global_names_assigned_with_host = [key for key, value in globals().items() if value == host]
+    for obj in global_names_assigned_with_host:
+        del(globals()[obj])
     print(f"\n{host.name} ::::: TERMINATED")
 
 
