@@ -28,6 +28,17 @@ class Park:
             print(f"\t{name} ::::: control unit #{id(identity)}")
         return "Listing complete"
 
+    def get_description(self):
+        try:
+            with open(f"Parks Descriptions/{self.park_name.lower()}.txt") as file:
+                text = file.read()
+        except FileNotFoundError:
+            return f"\nUnable to read the {self.park_name} description file"
+        if len(text) != 0:
+            return f"\n{self.park_name.upper()}\n{text}"
+        else:
+            return f"\n{self.park_name.upper()}\nDescription missing"
+
     def __str__(self):
         return self.park_name
 
@@ -125,10 +136,10 @@ def terminate_host(host):
 storage = Storage("Storage")
 
 # Delos theme parks initialisation
-park_1 = Park("WestWorld")
-park_2 = Park("SamuraiWorld")
+park_1 = Park("Westworld")
+park_2 = Park("Shogunworld")
 park_3 = Park("Raj")
-park_4 = Park("MedievalWorld")
+park_4 = Park("Medieval world")
 park_5 = Park("WarWorld")
 
 # creating hosts for the initialised parks
@@ -156,4 +167,4 @@ if __name__ == '__main__':
     print(Dolores)
     print(Park.delos_hosts_stats())
 
-    print(Maeve)
+    print(park_2.get_description())
