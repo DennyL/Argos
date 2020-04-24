@@ -34,7 +34,7 @@ class Park:
                 text = file.read()
         except FileNotFoundError:
             return f"\n'{self.park_name}' description file not found"
-        if len(text) != 0:
+        if len(text) > 1:
             return f"\n'{self.park_name.upper()}'\n{text}"
         else:
             return f"\n'{self.park_name.upper()}'\nDescription missing"
