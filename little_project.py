@@ -33,17 +33,17 @@ class Park:
             with open(f"Parks Descriptions/{self.park_name.lower()}.txt") as file:
                 text = file.read()
         except FileNotFoundError:
-            return f"\nUnable to read the {self.park_name} description file"
+            return f"\n'{self.park_name}' description file not found"
         if len(text) != 0:
-            return f"\n{self.park_name.upper()}\n{text}"
+            return f"\n'{self.park_name.upper()}'\n{text}"
         else:
-            return f"\n{self.park_name.upper()}\nDescription missing"
+            return f"\n'{self.park_name.upper()}'\nDescription missing"
 
     def __str__(self):
         return self.park_name
 
 
-class Host(Park):
+class Host:
     """The Host model"""
     def __init__(self, park, name, gender, race, height, legend="MISSING", back_story="MISSING"):
         self.name = name
@@ -61,17 +61,17 @@ class Host(Park):
         # and to the general statistic of Delos' hosts
         Park.delos_hosts.update({self.name: id(self)})
 
-    def __str__(self):
-        profile = []
-        for k, v in self.__dict__.items():
-            profile.append(f"\n{k.upper()}: {str(v)}")
-        return "".join(profile)
-
     def add_back_story(self, file):
         """host's back story upload. Receives a link to the file containing the back story"""
         with open(file) as back_story:
             self.back_story = back_story.read()
         print(f"\n### {self.name}. Back story successfully uploaded ###")
+
+    def __str__(self):
+        profile = []
+        for k, v in self.__dict__.items():
+            profile.append(f"\n{k.upper()}: {str(v)}")
+        return "".join(profile)
 
 
 class Storage:
