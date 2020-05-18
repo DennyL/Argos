@@ -14,20 +14,23 @@ class Park:
     def delos_hosts_stats(cls):
         """returns statistics of all instantiated delos' hosts in all parks and the storage"""
         print(f"\nDelos' property\nAll Hosts number: '{len(cls.delos_hosts)}'")
-        for name, identity in cls.delos_hosts.items():
+        for name, identity in Park.delos_hosts.items():
             print(f"\t{name} ::::: control unit #{identity}")
         return "Listing complete"
 
+    @property
     def active_hosts_number(self):
         """hosts number in a particular Delos park"""
         return f"{self.park_name}: '{len(self.active_hosts)}' hosts"
 
+    @property
     def active_hosts_stats(self):
         print(f"\n'{self.park_name.upper()}' theme park\nActive Hosts number: '{len(self.active_hosts)}'")
         for name, identity in self.active_hosts.items():
             print(f"\t{name} ::::: control unit #{id(identity)}")
         return "Listing complete"
 
+    @property
     def get_description(self):
         try:
             with open(f"Parks Descriptions/{self.park_name.lower()}.txt") as file:
@@ -81,10 +84,12 @@ class Storage:
         # below a container of hosts instances in a particular Delos park
         self.decommissioned_hosts = {}
 
+    @property
     def decommissioned_hosts_number(self):
         """hosts number in a particular Delos park"""
         return f"{self.park_name}: '{len(self.decommissioned_hosts)}' hosts"
 
+    @property
     def decommissioned_hosts_stats(self):
         print(f"\n'{self.park_name.upper()}'. \nHosts number: '{len(self.decommissioned_hosts)}'")
         for name, identity in self.decommissioned_hosts.items():
@@ -155,16 +160,16 @@ if __name__ == '__main__':
     Bernard.add_back_story("Stories/Bernard Lowe.txt")
     print(Dolores)
     print(Bernard)
-    print(park_1.active_hosts_stats())
+    print(park_1.active_hosts_stats)
     decommission_host(Dolores)
-    print(storage.decommissioned_hosts_stats())
-    print(park_1.active_hosts_stats())
+    print(storage.decommissioned_hosts_stats)
+    print(park_1.active_hosts_stats)
     print(Dolores)
     reactivate_host(Dolores, park_3)
-    print(storage.decommissioned_hosts_stats())
-    print(park_1.active_hosts_stats())
-    print(park_3.active_hosts_stats())
+    print(storage.decommissioned_hosts_stats)
+    print(park_1.active_hosts_stats)
+    print(park_3.active_hosts_stats)
     print(Dolores)
     print(Park.delos_hosts_stats())
 
-    print(park_2.get_description())
+    print(park_2.get_description)
